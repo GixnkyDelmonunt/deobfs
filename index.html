@@ -3,38 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lua Bytecode Decompressor & Constant Extractor</title>
+    <title>Luraph VM Bytecode Decompiler</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Lua Bytecode Unpacker</h1>
-            <p>Paste obfuscated Lua scripts containing hex-RLE bytecode payloads to unpack and extract the constant pool.</p>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="branding">
+                <h1>Luraph VM Decompiler</h1>
+                <p>AST-Heuristic Instruction & Constant Decoder</p>
+            </div>
+            <div class="actions">
+                <button id="decompile-btn" class="btn-primary">Decompile Script</button>
+                <button id="clear-btn" class="btn-secondary">Clear Workspace</button>
+            </div>
         </header>
 
-        <main class="workspace">
-            <div class="input-panel">
-                <label for="obfuscated-code">Obfuscated Lua Code</label>
-                <textarea id="obfuscated-code" placeholder="Paste your obfuscated Lua code here (e.g., local v15 = function(...) ... return v15('LOL!543Q...'))"></textarea>
+        <main class="editor-layout">
+            <div class="editor-pane">
+                <div class="pane-header">
+                    <span>Obfuscated Lua Input</span>
+                </div>
+                <textarea id="input-code" placeholder="Paste your obfuscated Luraph Lua script here..."></textarea>
             </div>
 
-            <div class="controls">
-                <button id="deobfuscate-btn" class="btn-primary">Deobfuscate & Extract</button>
-                <button id="clear-btn" class="btn-secondary">Clear</button>
+            <div class="sidebar-pane">
+                <div class="pane-header">
+                    <span>VM Metadata</span>
+                </div>
+                <div id="metadata-display" class="metadata-grid">
+                    <div class="meta-item"><span class="label">Payload Size:</span> <span id="meta-size">--</span></div>
+                    <div class="meta-item"><span class="label">Constants:</span> <span id="meta-constants">--</span></div>
+                    <div class="meta-item"><span class="label">Parameters:</span> <span id="meta-params">--</span></div>
+                    <div class="meta-item"><span class="label">Instructions:</span> <span id="meta-instructions">--</span></div>
+                    <div class="meta-item"><span class="label">Nested Protos:</span> <span id="meta-protos">--</span></div>
+                </div>
+                <div class="pane-header" style="margin-top: 20px;">
+                    <span>Detected Strings</span>
+                </div>
+                <div id="strings-list" class="strings-container">
+                    <p class="empty-state">Run decompiler to list strings...</p>
+                </div>
             </div>
 
-            <div class="output-panel">
-                <label for="output-code">Unpacked Constant Pool / Struct</label>
-                <textarea id="output-code" readonly placeholder="Output will appear here..."></textarea>
+            <div class="editor-pane">
+                <div class="pane-header">
+                    <span>Reconstructed Lua Output</span>
+                </div>
+                <textarea id="output-code" readonly placeholder="Output pseudo-code will generate here..."></textarea>
             </div>
         </main>
-
-        <footer>
-            <p>Analytic Tool &bull; Operates entirely client-side inside your browser.</p>
-        </footer>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
