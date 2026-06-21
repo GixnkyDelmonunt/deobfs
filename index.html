@@ -3,57 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luraph VM Bytecode Decompiler</title>
+    <title>LuaVM Bytecode Decompiler</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="app-container">
+    <div class="container">
         <header class="app-header">
-            <div class="branding">
-                <h1>Luraph VM Decompiler</h1>
-                <p>AST-Heuristic Instruction & Constant Decoder</p>
-            </div>
-            <div class="actions">
-                <button id="decompile-btn" class="btn-primary">Decompile Script</button>
-                <button id="clear-btn" class="btn-secondary">Clear Workspace</button>
-            </div>
+            <h1>LuaVM Static Decompiler</h1>
+            <p class="subtitle">Analyze, decode, and decompile obfuscated Lua bytecode structures</p>
         </header>
 
-        <main class="editor-layout">
-            <div class="editor-pane">
-                <div class="pane-header">
-                    <span>Obfuscated Lua Input</span>
-                </div>
-                <textarea id="input-code" placeholder="Paste your obfuscated Luraph Lua script here..."></textarea>
-            </div>
+        <main class="app-body">
+            <section class="control-panel">
+                <button id="decompile-btn" class="btn btn-primary">Decompile Script</button>
+                <button id="clear-btn" class="btn btn-secondary">Clear Fields</button>
+            </section>
 
-            <div class="sidebar-pane">
-                <div class="pane-header">
-                    <span>VM Metadata</span>
-                </div>
-                <div id="metadata-display" class="metadata-grid">
-                    <div class="meta-item"><span class="label">Payload Size:</span> <span id="meta-size">--</span></div>
-                    <div class="meta-item"><span class="label">Constants:</span> <span id="meta-constants">--</span></div>
-                    <div class="meta-item"><span class="label">Parameters:</span> <span id="meta-params">--</span></div>
-                    <div class="meta-item"><span class="label">Instructions:</span> <span id="meta-instructions">--</span></div>
-                    <div class="meta-item"><span class="label">Nested Protos:</span> <span id="meta-protos">--</span></div>
-                </div>
-                <div class="pane-header" style="margin-top: 20px;">
-                    <span>Detected Strings</span>
-                </div>
-                <div id="strings-list" class="strings-container">
-                    <p class="empty-state">Run decompiler to list strings...</p>
-                </div>
-            </div>
+            <div class="workspace">
+                <section class="editor-section">
+                    <div class="section-header">
+                        <h2>Obfuscated Lua Input</h2>
+                        <span class="badge">Paste Code Here</span>
+                    </div>
+                    <textarea id="input-code" placeholder="Paste your obfuscated Lua script here (e.g., the code containing the v15(...) call)..." spellcheck="false"></textarea>
+                </section>
 
-            <div class="editor-pane">
-                <div class="pane-header">
-                    <span>Reconstructed Lua Output</span>
-                </div>
-                <textarea id="output-code" readonly placeholder="Output pseudo-code will generate here..."></textarea>
+                <section class="editor-section">
+                    <div class="section-header">
+                        <h2>Reconstructed Output</h2>
+                        <span class="badge badge-success" id="status-badge">Awaiting Input</span>
+                    </div>
+                    <textarea id="output-code" readonly placeholder="The decompiled Lua code and instruction listing will appear here..." spellcheck="false"></textarea>
+                </section>
             </div>
         </main>
+
+        <footer class="app-footer">
+            <p>Analytical tool for reverse engineering, research, and non-proliferation analysis of obfuscated code.</p>
+        </footer>
     </div>
-    <script src="script.js"></script>
+
+    <!-- Load the decompiler backend logic -->
+    <script src="decompiler.js"></script>
+    
+    <!-- Connect the user interface to the logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputField = document.getElementById('input-code');
+            const outputField = document.getElementById('output-code');
+            const decompileBtn = document.getElementById('decompile-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const statusBadge = document.getElementById('status-badge');
+
+            decompileBtn.addEventListener('click', () => {
+                const source = inputField.value.trim();
+                if (!source) {
+                    outputField.value = "-- Error: Please paste an obfuscated script into the input field.";
+                    statusBadge.textContent = "Error";
+                    statusBadge.className = "badge badge-error";
+                    return;
+                }
+
+                statusBadge.textContent = "Processing...";
+                statusBadge.className = "badge badge-warning";
+
+                // Decompiler operates synchronously; defer slightly to allow UI thread to show status
+                setTimeout(() => {
+                    try {
+                        const decompiler = new window.LuraphDecompiler();
+                        const result = decompiler.decompile(source);
+                        outputField.value = result;
+
+                        if (result.startsWith("-- Error")) {
+                            statusBadge.textContent = "Parsing Failed";
+                            statusBadge.className = "badge badge-error";
+                        } else {
+                            statusBadge.textContent = "Decompiled";
+                            statusBadge.className = "badge badge-success";
+                        }
+                    } catch (e) {
+                        outputField.value = `-- Unexpected UI handler exception:\n-- ${e.message}\n-- Stack:\n${e.stack}`;
+                        statusBadge.textContent = "Exception";
+                        statusBadge.className = "badge badge-error";
+                    }
+                }, 50);
+            });
+
+            clearBtn.addEventListener('click', () => {
+                inputField.value = "";
+                outputField.value = "";
+                statusBadge.textContent = "Awaiting Input";
+                statusBadge.className = "badge";
+            });
+        });
+    </script>
 </body>
 </html>
