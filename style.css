@@ -1,16 +1,21 @@
-/* Styling variables for Dark/IDE Theme */
+/* Luraph Decompiler CSS Stylesheet */
+
 :root {
-    --bg-main: #0b0d16;
-    --bg-editor: #121424;
-    --bg-header: #1a1d36;
-    --border-color: #242946;
-    --text-primary: #e6e9ef;
-    --text-muted: #6272a4;
-    --accent-blue: #8be9fd;
-    --accent-green: #50fa7b;
-    --accent-purple: #bd93f9;
-    --accent-pink: #ff79c6;
-    --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
+    --bg-dark: #0f111a;
+    --bg-surface: #1e2230;
+    --bg-input: #121420;
+    --text-primary: #e6edf3;
+    --text-muted: #8b949e;
+    --color-primary: #388bfd;
+    --color-primary-hover: #58a6ff;
+    --color-secondary: #21262d;
+    --color-secondary-hover: #30363d;
+    --color-success: #238636;
+    --color-warning: #9e6a00;
+    --color-error: #da3633;
+    --border-color: #30363d;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    --font-mono: "Fira Code", "Consolas", "Courier New", Courier, monospace;
 }
 
 * {
@@ -20,197 +25,191 @@
 }
 
 body {
-    background-color: var(--bg-main);
+    background-color: var(--bg-dark);
     color: var(--text-primary);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: var(--font-sans);
+    line-height: 1.5;
     height: 100vh;
-    overflow: hidden;
-    padding: 15px;
-}
-
-.app-container {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--bg-editor);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.app-header {
-    background-color: var(--bg-header);
-    padding: 15px 20px;
+.container {
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 20px;
+    height: 100vh;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Header Styles */
+.app-header {
     border-bottom: 1px solid var(--border-color);
+    padding-bottom: 15px;
 }
 
-.branding h1 {
-    font-size: 1.3rem;
-    color: var(--accent-purple);
-    font-weight: 700;
+.app-header h1 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
 }
 
-.branding p {
-    font-size: 0.8rem;
+.subtitle {
     color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-top: 4px;
 }
 
-.actions {
+/* App Body & Workspace */
+.app-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-height: 0; /* Important for flex child scrolling */
+}
+
+/* Controls */
+.control-panel {
     display: flex;
     gap: 10px;
 }
 
-/* Form inputs & Button elements */
-.btn-primary, .btn-secondary {
-    padding: 10px 18px;
-    font-size: 0.85rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 4px;
+.btn {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.1s;
+    border: 1px solid transparent;
+    transition: background-color 0.2s, border-color 0.2s;
 }
 
 .btn-primary {
-    background-color: var(--accent-purple);
-    color: var(--bg-main);
+    background-color: var(--color-primary);
+    color: #ffffff;
 }
 
 .btn-primary:hover {
-    background-color: #a476f5;
+    background-color: var(--color-primary-hover);
 }
 
 .btn-secondary {
-    background-color: #282a36;
+    background-color: var(--color-secondary);
     color: var(--text-primary);
-    border: 1px solid var(--border-color);
+    border-color: var(--border-color);
 }
 
 .btn-secondary:hover {
-    background-color: #343746;
+    background-color: var(--color-secondary-hover);
 }
 
-.btn-primary:active, .btn-secondary:active {
-    transform: scale(0.98);
-}
-
-/* Code Layout Panel */
-.editor-layout {
+/* Two-column layout */
+.workspace {
+    flex: 1;
     display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 150px 1fr;
-    flex-grow: 1;
-    overflow: hidden;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    min-height: 0; /* Prevents overflow in grid rows */
 }
 
-@media (min-width: 992px) {
-    .editor-layout {
-        grid-template-columns: 1fr 280px 1fr;
-        grid-template-rows: 1fr;
+@media (max-width: 900px) {
+    .workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
     }
 }
 
-.editor-pane, .sidebar-pane {
+.editor-section {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
-    border-right: 1px solid var(--border-color);
-    overflow: hidden;
+    min-height: 0;
 }
 
-.editor-pane:last-child {
-    border-right: none;
-}
-
-.pane-header {
-    background-color: rgba(0, 0, 0, 0.2);
-    padding: 8px 15px;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    font-weight: bold;
-    letter-spacing: 1px;
-    color: var(--text-muted);
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
     border-bottom: 1px solid var(--border-color);
+    background-color: rgba(255, 255, 255, 0.02);
 }
 
+.section-header h2 {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+/* Badges */
+.badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background-color: var(--color-secondary);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+}
+
+.badge-success {
+    background-color: rgba(35, 134, 54, 0.15);
+    color: #3fb950;
+    border-color: rgba(63, 185, 80, 0.3);
+}
+
+.badge-warning {
+    background-color: rgba(158, 106, 0, 0.15);
+    color: #d29922;
+    border-color: rgba(210, 153, 34, 0.3);
+}
+
+.badge-error {
+    background-color: rgba(218, 54, 51, 0.15);
+    color: #ff7b72;
+    border-color: rgba(248, 81, 73, 0.3);
+}
+
+/* Editor Input & Output Fields */
 textarea {
-    width: 100%;
-    height: 100%;
-    background-color: var(--bg-editor);
-    border: none;
-    color: #f8f8f2;
+    flex: 1;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
     font-family: var(--font-mono);
-    font-size: 0.85rem;
-    padding: 20px;
+    font-size: 0.9rem;
+    padding: 15px;
+    border: none;
+    border-radius: 0 0 7px 7px;
     resize: none;
     outline: none;
-    line-height: 1.5;
+    overflow-y: auto;
+    line-height: 1.45;
+}
+
+textarea::placeholder {
+    color: #484f58;
 }
 
 textarea[readonly] {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: #0b0c14;
+    cursor: text;
 }
 
-/* Sidebar Information Panel */
-.sidebar-pane {
-    background-color: rgba(0, 0, 0, 0.15);
-    padding: 15px;
-}
-
-.metadata-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
-}
-
-.meta-item {
-    font-size: 0.8rem;
-    background-color: var(--bg-main);
-    padding: 8px 12px;
-    border-radius: 4px;
-    border: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-}
-
-.meta-item .label {
-    color: var(--text-muted);
-}
-
-.meta-item span:last-child {
-    font-weight: bold;
-    color: var(--accent-blue);
-}
-
-.strings-container {
-    flex-grow: 1;
-    overflow-y: auto;
-    margin-top: 10px;
-    background-color: var(--bg-main);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
-    padding: 10px;
-}
-
-.strings-container p.empty-state {
-    font-size: 0.8rem;
-    color: var(--text-muted);
+/* App Footer */
+.app-footer {
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
     text-align: center;
-    margin-top: 10px;
 }
 
-.string-tag {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    color: var(--accent-green);
-    background-color: rgba(80, 250, 123, 0.1);
-    padding: 4px 8px;
-    border-radius: 3px;
-    margin-bottom: 6px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: block;
+.app-footer p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
 }
