@@ -225,6 +225,19 @@ class LuraphDecompiler {
             67: { name: "NEWTABLE_2", format: "R{A} = {}" },
             68: { name: "ADD_REG", format: "R{A} = {B} + R{C}" },
             69: { name: "CALL_VOID", format: "R{A}(unpack(REG, {B}, {C}))" },
+            4: { name: "CALL", format: "R{A} = R{B}(unpack(REG, {A}+1, {C}))" },
+            9: { name: "OP_9", format: "R{A} = R{B} + R{C}" }, // Basic addition
+            14: { name: "SETLIST", format: "REG[{A}] = {B} values..." }, // Array initialization
+            28: { name: "CALL_VOID", format: "R{A}(unpack(REG, {A}+1, {B}))" },
+            36: { name: "OP_36", format: "R{A} = #R{B}" }, // Length measurement
+            37: { name: "SETTABLE", format: "R{A}[{B}] = R{C}" }, // Table key assignment
+            39: { name: "GETTABLE_FIELD", format: "R{A} = R{A}[{B}]" }, // Field indexing (e.g., string.char)
+            40: { name: "CALL_ONE_ARG", format: "R{A}(R{B})" },
+            44: { name: "OP_44", format: "if R{A} then JUMP {B}" },
+            45: { name: "OP_45", format: "OP_45 R{A} {B} {C}" },
+            46: { name: "CALL_DECRYPT", format: "R{A} = R{A}({B}, {C})" }, // Used to call the decryption helper
+            51: { name: "OP_51", format: "OP_51 R{A} {B} {C}" },
+            53: { name: "CALL_METHOD", format: "R{A} = R{A}({B})" }, // Methods like bit32.bxor
             70: { name: "RETURN_CALL_2", format: "return R{A}(unpack(REG, {B}, {C}))" }
         };
     }
