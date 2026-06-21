@@ -309,7 +309,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             // Append structured jump offsets to simulate actual structure
-            outputCode += `[INST_${idx:03d}] ${instructionLine}\n`;
+            outputCode += `[INST_${String(idx).padStart(3, '0')}] ${instructionLine}\n`;
         });
 
         outputArea.value = outputCode;
