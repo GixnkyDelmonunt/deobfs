@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lua Bytecode Decompressor & Constant Extractor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Lua Bytecode Unpacker</h1>
+            <p>Paste obfuscated Lua scripts containing hex-RLE bytecode payloads to unpack and extract the constant pool.</p>
+        </header>
+
+        <main class="workspace">
+            <div class="input-panel">
+                <label for="obfuscated-code">Obfuscated Lua Code</label>
+                <textarea id="obfuscated-code" placeholder="Paste your obfuscated Lua code here (e.g., local v15 = function(...) ... return v15('LOL!543Q...'))"></textarea>
+            </div>
+
+            <div class="controls">
+                <button id="deobfuscate-btn" class="btn-primary">Deobfuscate & Extract</button>
+                <button id="clear-btn" class="btn-secondary">Clear</button>
+            </div>
+
+            <div class="output-panel">
+                <label for="output-code">Unpacked Constant Pool / Struct</label>
+                <textarea id="output-code" readonly placeholder="Output will appear here..."></textarea>
+            </div>
+        </main>
+
+        <footer>
+            <p>Analytic Tool &bull; Operates entirely client-side inside your browser.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
