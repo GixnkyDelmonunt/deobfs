@@ -1,5 +1,5 @@
 /**
- * Institutional Statistical Arbitrage Decompiler Core v1.0
+ * Institutional Statistical Arbitrage Decompiler Core v1.1
  * Specialized for LuaVM/Luraph Bytecode Reconstruction
  */
 
@@ -88,7 +88,7 @@ class LuraphDecoder {
                     }
                     repeatCount = null;
                 } else {
-                    bytes.extend = bytes.append if 'extend' in bytes else bytes.push(byteValue);
+                    bytes.push(byteValue);
                 }
             }
         }
